@@ -1,0 +1,21 @@
+.colorPickerSliderItem input {
+  height: 3px;
+  outline: none;
+  margin-top: 5px;
+}
+#r {
+  background: linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 0));
+}
+#g {
+  background: linear-gradient(90deg, rgb(0, 255, 0), rgb(0, 0, 0));
+}
+#b {
+  background: linear-gradient(90deg, rgb(0, 0, 255), rgb(0, 0, 0));
+}
+
+.colorPickerSliderItemFieldSet {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

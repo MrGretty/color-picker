@@ -1,0 +1,23 @@
+.colorPickerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 15px;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.colorPickerItem:hover {
+  cursor: pointer;
+  background-color: #2f78b7;
+  color: #fff;
+}
+
+.colorPickerItem:last-child {
+  border-bottom: none;
+}
+
+.colorPickerItemSelected {
+  background-color: lightyellow;
+}
