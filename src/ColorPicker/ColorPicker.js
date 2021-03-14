@@ -4,38 +4,56 @@ import ColorPickerValueBlock from './ColorPickerValueBlock';
 import ColorPickerListBlock from './ColorPickerListBlock';
 import ColorPickerSliderBlock from './ColorPickerSliderBlock';
 
-import { ACTIONS, ContextApp, reducer } from './reducer';
+import { ACTIONS, reducer } from './reducer';
 
-import { convertToHex } from '../helpers/colorConverter';
+import { convertToHex, convertToGrb } from '../helpers/colorConverter';
 
 import './ColorPicker.css';
 
 const ColorPicker = ({ value, onChange, colors }) => {
-  const [state, dispatch] = useReducer(reducer, { listIsOpen: false, sliderIsOpen: false });
+  const [state, dispatch] = useReducer(reducer, {
+    currentColorHex: convertToHex(value),
+    currentColorRgb: convertToGrb(value),
+    listIsOpen: false,
+    sliderIsOpen: false,
+  });
 
-  const onColorClick = (color) => {
+  const onColorNameChoosen = (color) => () => {
     const colorConverted = convertToHex(color);
 
-    if (colorConverted === state.currentColor) {
+    if (colorConverted === state.currentColorHex) {
       dispatch({ type: ACTIONS.types.reset });
     } else {
       onChange(colorConverted);
     }
   };
 
-  // если захотеть менять из вне
+  const onOutSideClick = (type) => () => dispatch({ type: type, value: ACTIONS.value.close });
+  const onDialogOpen = (type, value) => () => dispatch({ type, value });
+
   useEffect(() => {
-    dispatch({ type: ACTIONS.types.color, value: value });
+    dispatch({ type: ACTIONS.types.color, valueHex: convertToHex(value), valueRgb: convertToGrb(value) });
   }, [value]);
 
   return (
-    <ContextApp.Provider value={{ dispatch, onColorClick, state, colors }}>
-      <div className="colorPickerContainer">
-        <ColorPickerValueBlock />
-        <ColorPickerSliderBlock />
-        <ColorPickerListBlock />
-      </div>
-    </ContextApp.Provider>
+    <div className="colorPickerContainer">
+      <ColorPickerValueBlock currentColorHex={state.currentColorHex} />
+      <ColorPickerSliderBlock
+        currentColorRgb={state.currentColorRgb}
+        sliderIsOpen={state.sliderIsOpen}
+        onColorNameChoosen={onColorNameChoosen}
+        outSideClick={onOutSideClick(ACTIONS.types.slider)}
+        onPickerSliderOpen={onDialogOpen(ACTIONS.types.slider, !state.sliderIsOpen)}
+      />
+
+      <ColorPickerListBlock
+        colors={colors}
+        listIsOpen={state.listIsOpen}
+        onColorNameChoosen={onColorNameChoosen}
+        outSideClick={onOutSideClick(ACTIONS.types.list)}
+        onPickerListOpen={onDialogOpen(ACTIONS.types.list, !state.listIsOpen)}
+      />
+    </div>
   );
 };
 

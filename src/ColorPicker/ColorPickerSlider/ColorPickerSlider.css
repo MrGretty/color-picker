@@ -43,6 +43,8 @@ input[type='range']::-ms-thumb {
 
   top: 70px;
   right: 0px;
+
+  padding: 10px 0;
 }
 
 .colorPickerSlider::before {
@@ -56,4 +58,37 @@ input[type='range']::-ms-thumb {
   right: 70px;
   top: -12px;
   position: absolute;
+}
+
+.colorPickerActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+
+.colorPickerActions > div:first-child {
+  margin-right: 10px;
+  background-color: #d2d3d5;
+  padding: 4px 8px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+.colorPickerActions > div:first-child:hover {
+  background-color: #b3b3b3;
+  color: #fff;
+}
+
+.colorPickerActions > div + div {
+  background-color: #6aa658;
+  padding: 4px 12px;
+  color: #fff;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+.colorPickerActions > div + div:hover {
+  background-color: #7cc765;
 }

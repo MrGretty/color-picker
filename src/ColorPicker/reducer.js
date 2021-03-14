@@ -1,5 +1,4 @@
 import React from 'react';
-export const ContextApp = React.createContext();
 
 export const ACTIONS = {
   types: {
@@ -15,14 +14,19 @@ export const ACTIONS = {
 };
 
 export const reducer = (state, action) => {
-  console.log(action);
   switch (action.type) {
     case ACTIONS.types.list:
-      return { ...state, listIsOpen: action.value, sliderIsOpen: false };
+      return { ...state, listIsOpen: action.value };
     case ACTIONS.types.slider:
-      return { ...state, listIsOpen: false, sliderIsOpen: action.value };
+      return { ...state, sliderIsOpen: action.value };
     case ACTIONS.types.color:
-      return { ...state, currentColor: action.value, listIsOpen: false, sliderIsOpen: false };
+      return {
+        ...state,
+        currentColorHex: action.valueHex,
+        currentColorRgb: action.valueRgb,
+        listIsOpen: false,
+        sliderIsOpen: false,
+      };
     case ACTIONS.types.reset: {
       return { ...state, listIsOpen: false, sliderIsOpen: false };
     }

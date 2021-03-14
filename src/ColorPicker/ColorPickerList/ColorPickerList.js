@@ -1,17 +1,12 @@
-import { useContext } from 'react';
-import { ContextApp } from '../reducer';
-
 import ColorPickerItem from './ColorPickerListItem/ColorPickerItem';
 
 import './ColorPickerList.css';
 
-const ColorPickerList = () => {
-  const { colors } = useContext(ContextApp);
-
+const ColorPickerList = ({ colors, onColorClick }) => {
   return (
     <div className="colorPickerlist">
-      {colors.map((color) => (
-        <ColorPickerItem key={color} color={color} />
+      {colors.map((colorName) => (
+        <ColorPickerItem key={colorName} colorName={colorName} onColorClick={onColorClick} />
       ))}
     </div>
   );

@@ -1,21 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 
-const useOutsideClick = (ref, cb) => {
+const useOutsideClick = (cb) => {
+  const [node, setNode] = useState();
+  const savedHandler = useRef(cb);
+
   const onClick = (e) => {
-    if (ref.current && !ref.current.contains(e.target)) {
-      cb();
+    if (node && !node.contains(e.target)) {
+      savedHandler.current(e);
     }
   };
 
   useEffect(() => {
-    // console.log(1);
-    document.addEventListener('click', onClick);
+    savedHandler.current = cb;
+  });
 
+  const ref = useCallback((node) => {
+    setNode(node);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', onClick);
     return () => {
-      // console.log(2);
       document.removeEventListener('click', onClick);
     };
   });
+
+  return ref;
 };
 
 export default useOutsideClick;

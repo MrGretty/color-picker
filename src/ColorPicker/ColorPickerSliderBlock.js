@@ -1,26 +1,52 @@
-import { useContext, useRef } from 'react';
-import ColorPickerSlider from './ColorPickerSlider/ColorPickerSlider';
+import { useEffect, useState } from 'react';
 
-import { ContextApp, ACTIONS } from './reducer';
+import ColorPickerSlider from './ColorPickerSlider/ColorPickerSlider';
 
 import useOutSideClick from '../hooks/useOutsideClick';
 
-const ColorPickerSliderBlock = () => {
-  const ref = useRef();
-  const { state, dispatch } = useContext(ContextApp);
+import { splitRgbToObject, joinObjectToRgb } from '../helpers/colorConverter';
 
-  useOutSideClick(ref, () => {
-    dispatch({ type: ACTIONS.types.slider, value: ACTIONS.value.close });
-  });
+const ColorPickerSliderBlock = ({
+  outSideClick,
+  sliderIsOpen,
+  onColorNameChoosen,
+  currentColorRgb,
+  onPickerSliderOpen,
+}) => {
+  const [color, setColor] = useState(currentColorRgb);
 
-  const onClickAction = () => dispatch({ type: ACTIONS.types.slider, value: !state.sliderIsOpen });
+  const onColorValueChange = (palletName) => ({ target }) => {
+    const splittedRgb = splitRgbToObject(color);
+    splittedRgb[palletName] = target.value;
+    setColor(joinObjectToRgb(splittedRgb));
+  };
+
+  const onColorReset = () => {
+    setColor(currentColorRgb);
+    outSideClick();
+  };
+
+  const ref = useOutSideClick(onColorReset);
+
+  useEffect(() => {
+    setColor(currentColorRgb);
+  }, [currentColorRgb]);
 
   return (
-    <div ref={ref}>
-      <div className="squareContainer" onClick={onClickAction}>
-        <div className="square" style={{ backgroundColor: state.currentColor }}></div>
+    <div>
+      <div className="squareContainer" onClick={onPickerSliderOpen}>
+        <div className="square" style={{ backgroundColor: color }}></div>
       </div>
-      {state.sliderIsOpen && <ColorPickerSlider />}
+      {sliderIsOpen && (
+        <div ref={ref}>
+          <ColorPickerSlider
+            onColorAccept={onColorNameChoosen(color)}
+            onColorReset={onColorReset}
+            onColorValueChange={onColorValueChange}
+            colorsObject={splitRgbToObject(color)}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -2,14 +2,21 @@ import ColorPickerSliderItem from './ColorPickerSliderItem/ColorPickerSliderItem
 
 import './ColorPickerSlider.css';
 
-const RGB_RANGE = ['r', 'g', 'b'];
-
-const ColorPickerSlider = () => {
+const ColorPickerSlider = ({ colorsObject, onColorReset, onColorAccept, onColorValueChange }) => {
   return (
     <div className="colorPickerSlider">
-      {RGB_RANGE.map((colorName) => (
-        <ColorPickerSliderItem key={colorName} colorName={colorName} />
+      {Object.keys(colorsObject).map((colorName) => (
+        <ColorPickerSliderItem
+          key={colorName}
+          onColorValueChange={onColorValueChange}
+          colorName={colorName}
+          colorValue={colorsObject[colorName]}
+        />
       ))}
+      <div className="colorPickerActions">
+        <div onClick={onColorReset}>Cancel</div>
+        <div onClick={onColorAccept}>Ok</div>
+      </div>
     </div>
   );
 };
