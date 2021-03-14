@@ -45,7 +45,6 @@ const ColorPicker = ({ value, onChange, colors }) => {
         outSideClick={onOutSideClick(ACTIONS.types.slider)}
         onPickerSliderOpen={onDialogOpen(ACTIONS.types.slider, !state.sliderIsOpen)}
       />
-
       <ColorPickerListBlock
         colors={colors}
         listIsOpen={state.listIsOpen}
