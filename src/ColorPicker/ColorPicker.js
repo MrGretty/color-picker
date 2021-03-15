@@ -6,14 +6,14 @@ import ColorPickerSliderBlock from './ColorPickerSliderBlock';
 
 import { ACTIONS, reducer } from './reducer';
 
-import { convertToHex, convertToGrb } from '../helpers/colorConverter';
+import { convertToHex, convertToRgb } from '../helpers/colorConverter';
 
 import './ColorPicker.css';
 
 const ColorPicker = ({ value, onChange, colors }) => {
   const [state, dispatch] = useReducer(reducer, {
     currentColorHex: convertToHex(value),
-    currentColorRgb: convertToGrb(value),
+    currentColorRgb: convertToRgb(value),
     listIsOpen: false,
     sliderIsOpen: false,
   });
@@ -32,7 +32,7 @@ const ColorPicker = ({ value, onChange, colors }) => {
   const onDialogOpen = (type, value) => () => dispatch({ type, value });
 
   useEffect(() => {
-    dispatch({ type: ACTIONS.types.color, valueHex: convertToHex(value), valueRgb: convertToGrb(value) });
+    dispatch({ type: ACTIONS.types.color, valueHex: convertToHex(value), valueRgb: convertToRgb(value) });
   }, [value]);
 
   return (

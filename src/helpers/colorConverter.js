@@ -4,7 +4,7 @@ export const convertToHex = (color) => {
   return ctx.fillStyle;
 };
 
-export const convertToGrb = (color) => {
+export const convertToRgb = (color) => {
   const el = document.createElement('div');
   el.style.color = color;
   return el.style.color;
